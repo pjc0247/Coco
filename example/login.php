@@ -12,4 +12,6 @@ coco::out([
   
 if( $account->password != $password )
   coco::abort(INCORRECT_PASSWORD);
+
+coco::session("account", $account);
 ?>
