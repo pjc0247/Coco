@@ -15,5 +15,7 @@ coco::in([
 coco::out([
   "timestamp" => "timestamp"]);
 
+
+/* 변경된 값은 response이후에 자동으로 DB에 커밋된다. */
 $account->nickname = $new_nickname;
 ?>
