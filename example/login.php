@@ -7,7 +7,7 @@ coco::in([
 coco::out([
   "nickname" => "from[account->nickname]",
   "level" => "from[account->level]",
-  "session" => "session",
+  "session" => "session_key",
   "timestamp" => "timestamp"]);
   
 if( $account->password != $password )
