@@ -3,6 +3,61 @@ Coco
 
 PHP용 게임 서버 프레임워크
 
+Interface
+----
+__a normal way__
+```PHP
+<?php
+if( array_key_exists("id",$_GET) && array_key_exists("password",$_GET) ){
+  $id = $_GET["id"];
+  $password = $_GET["password"];
+}
+else{
+  exit( INVALID_PARAM );
+}
+  
+if( count($id) < 8 || count($id) < 16 )
+  exit( INVALID_PARAM_VALUE );
+if( count($password) < 8 || count($password) < 32 )
+  exit( INVALID_PARAM_VALUE );
+  
+db_connect("localhost", "user", "password", "dbname");
+$id = db_escape($id);
+$password = db_escape($password);
+$result = db_query(
+  "SELECT nickname,level FROM accounts WHERE id=${id} AND password=${password}");
+
+if( $result == null )
+  exit( LOGIN_FAILED );
+
+$row = db_fetch_row($result);
+$nickname = db_fetch_value($row);
+$level = db_fetch_value($row);
+
+db_close_result($result);
+
+echo(json_encode([
+  "result" => "0",
+  "nickname" => $nickname,
+  "level" => "level"]));
+?>
+```
+
+__using coco's__
+```PHP
+<?php
+coco::in([
+  "id" => "required pk[accounts] as[account] va-length[8,16]",
+  "password" => "required va-length[8,32]"]);
+coco::out([
+  "nickname" => "required from[account->nickname]",
+  "level" => "required from[accont->level]"]);
+  
+if( $account->password != $password )
+  coco::abort( INVALID_PASSWORD );
+?>
+```
+
 
 IN attributes
 ----
